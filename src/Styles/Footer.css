@@ -1,0 +1,32 @@
+.footer {
+    background-color: #051f48;
+    color: white;
+    text-align: center;
+    padding: 1rem 0;
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+  }
+  
+  .footer-content {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .social-icon {
+    font-size: 2rem;
+    color: white;
+    transition: transform 0.3s;
+  }
+  
+  .social-icon:hover {
+    transform: scale(1.1);
+    color: #fcc31a;
+  }
+  
+  .footer-text {
+    font-size: 0.9rem;
+    color: dimgrey;
+  }

@@ -1,0 +1,58 @@
+/* Styl pro container */
+.custom-container {
+  background-color: #051f48;
+  color: #eaf1fc;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin: 5px auto;
+}
+
+/* Styl pro linky */
+.custom-link {
+  color: #fcc31a;
+  text-decoration: none;
+}
+
+.custom-link:hover {
+  text-decoration: underline;
+}
+
+.countdown-time {
+  font-size: 3.5rem;
+  font-weight: bold;
+  color: #fcc31a;
+}
+
+.countdown-label {
+  font-size: 1rem;
+  color: #b49300; 
+}
+
+/* Responzivní úpravy pro mobilní zařízení */
+@media (max-width: 767px) {
+  .custom-container {
+    padding: 15px;
+  }
+
+  .countdown-time {
+    font-size: 2.5rem; 
+  }
+
+  .countdown-label {
+    font-size: 0.875rem;
+  }
+
+  .row {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .col-lg-6 {
+    text-align: center;
+  }
+
+  .custom-link {
+    font-size: 1.1rem;
+  }
+}

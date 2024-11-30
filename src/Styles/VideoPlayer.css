@@ -1,0 +1,51 @@
+/* Kontejner pro video přehrávač */
+.video-player-container {
+  background-color: #051f48; /* Barva pozadí */
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  margin: 20px auto;
+  max-width: 800px; /* Maximální šířka videa */
+  width: 100%; /* Flexibilní šířka */
+  box-sizing: border-box; /* Zajištění správného výpočtu šířky */
+}
+
+/* Responzivní video s využitím Bootstrap třídy embed-responsive */
+.embed-responsive {
+  position: relative;
+  display: block;
+  width: 100%;
+  padding: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+.embed-responsive-16by9 {
+  padding-bottom: 56.25%; /* Poměr stran 16:9 */
+}
+
+.embed-responsive-item {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+  object-fit: cover; /* Zajištění správného přizpůsobení obsahu */
+}
+
+/* Mobilní úpravy */
+@media (max-width: 768px) {
+  .video-player-container {
+    padding: 10px; /* Menší padding na mobilu */
+    border-radius: 5px;
+  }
+
+  .embed-responsive {
+    padding-bottom: 56.25%; /* Poměr stran zůstává stejný */
+  }
+
+  .embed-responsive-item {
+    object-fit: contain; /* Lepší přizpůsobení videa na menších obrazovkách */
+  }
+}

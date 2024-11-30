@@ -1,0 +1,25 @@
+.about-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+  }
+  
+  .carousel {
+    width: 80%; /* Šířka carouselu */
+    margin: auto;
+  }
+  
+  .carousel img {
+    height: 400px; /* Nastavení výšky obrázků */
+    object-fit: cover; /* Zachování poměru stran */
+  }
+  
+  .upload-section {
+    margin-top: 20px;
+  }
+  
+  input[type="file"] {
+    margin-right: 10px;
+  }
+  

@@ -1,0 +1,122 @@
+/* Celkový styl stránky */
+.home-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.image-section {
+  position: relative;
+  width: 100%;
+  height: 100vh; /* Celá výška obrazovky */
+  margin: 0;
+  padding: 0;
+}
+
+.background-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh; /* Celá výška obrazovky */
+  object-fit: cover;
+  z-index: -1;
+}
+
+.overlay-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  text-align: center;
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
+  padding: 2rem;
+}
+
+.overlay-text img {
+  max-width: 100%;
+  height: auto;
+}
+
+.overlay-text h2 {
+  font-size: 3rem;
+  margin: 0;
+  color: #fcc31a;
+}
+
+.logoNB {
+  max-width: 5rem;
+}
+
+/* Obrázek MerWeekend */
+.merweekend {
+  width: 500px;
+  width: 80%;
+}
+
+.overlay-text h2 {
+  font-size: 2rem;
+  color: #fcc31a;
+}
+
+
+/* Navigační lišta */
+.custom-navbar {
+  background-color: rgba(4, 29, 70, 0.8) !important;
+}
+
+.custom-nav {
+  list-style: none;
+  display: flex;
+  gap: 1rem;
+}
+
+.custom-nav-link {
+  color: #eaf1fc !important;
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  font-weight: bold;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.custom-nav-link:hover {
+  background-color: rgba(255, 252, 76, 0.3) !important;
+  color: #fcc31a !important;
+}
+
+.custom-nav-link.active {
+  background-color: rgba(255, 255, 255, 0.3) !important;
+  color: #fcc31a !important;
+}
+
+.logoNB {
+  max-width: 5rem;
+}
+/* Media Queries pro responzivní design */
+@media (max-width: 768px) {
+  .custom-navbar {
+    justify-content: space-between;
+  }
+
+  .navbar-toggler {
+    margin-left: auto;
+  }
+
+  .custom-nav {
+    flex-direction: column;
+    align-items: flex-end;
+  }
+
+  .navbar-collapse.show .custom-nav {
+    display: flex;
+  }
+  .custom-nav-link {
+    padding: 0.5rem 1rem;
+    color: #eaf1fc !important;
+  }
+}

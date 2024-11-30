@@ -57,7 +57,6 @@ const About = () => {
           'Content-Type': 'multipart/form-data',
         },
       });
-      console.log('Úspěšné nahrání obrázku:', response.data);
       const newImageUrl = `data:${response.data.contentType};base64,${response.data.image}`;
       setImages((prev) => [...prev, newImageUrl]);
     } catch (error) {
@@ -75,15 +74,14 @@ const About = () => {
   };
 
   return (
-    <>
     <div className="about-container">
       {/* Carousel */}
-      <div id="carouselExampleIndicators" className="carousel slide" data-ride="carousel">
+      <div id="aboutMerWeekend" className="carousel slide" data-ride="carousel">
         <ol className="carousel-indicators">
           {images.map((_, index) => (
             <li
               key={index}
-              data-target="#carouselExampleIndicators"
+              data-target="#aboutMerWeekend"
               data-slide-to={index}
               className={index === activeIndex ? 'active' : ''}
               onClick={() => setActiveIndex(index)}
@@ -97,12 +95,14 @@ const About = () => {
             </div>
           ))}
         </div>
-        <a className="carousel-control-prev" href="#carouselExampleIndicators" role="button" onClick={handlePrev}>
+        <a className="carousel-control-prev" href="#aboutMerWeekend" role="button" onClick={handlePrev}>
           <span className="carousel-control-prev-icon" aria-hidden="true"></span>
         </a>
-        <a className="carousel-control-next" href="#carouselExampleIndicators" role="button" onClick={handleNext}>
+        <a className="carousel-control-next" href="#aboutMerWeekend" role="button" onClick={handleNext}>
+          <span className="carousel-control-next-icon" aria-hidden="true"></span>
         </a>
       </div>
+
       {/* File upload */}
       <div className="upload-section mt-4">
         <form onSubmit={handleUpload}>
@@ -113,7 +113,6 @@ const About = () => {
         </form>
       </div>
     </div>
-    </>
   );
 };
 

@@ -6,6 +6,6 @@ const CarouselImageSchema = new mongoose.Schema({
   contentType: String, // Typ souboru (např. image/jpeg)
 });
 
-const CarouselImage = mongoose.model('carouselImg', CarouselImageSchema);
+const CarouselImage = mongoose.model('carouselimgs', CarouselImageSchema);
 
 module.exports = CarouselImage;

@@ -2,11 +2,11 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 20px;
+    padding: 80px;
   }
   
   .carousel {
-    width: 80%; /* Šířka carouselu */
+    width: 50%; /* Šířka carouselu */
     margin: auto;
   }
   

@@ -3,7 +3,7 @@ import '../Styles/Home.css';
 
 const NavBar = () => {
   return (
-    <Navbar expand="lg" fixed="top" className="custom-navbar navbar-dark bg-dark">
+    <Navbar expand="lg" fixed="top" className="custom-navbar ">
       <Container>
         <Navbar.Brand href="/"><img src={`${process.env.PUBLIC_URL}/images/logoBold.png`} alt="Logo" className="logoNB" /></Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />

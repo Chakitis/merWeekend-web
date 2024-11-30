@@ -22,25 +22,13 @@
 input[type="file"] {
   margin-right: 10px;
 }
+@media (max-width: 768px) {
+  .about-container {
+    padding: 20px;
+  }
 
-.carousel-item {
-  transition: transform 1s ease-in-out, opacity 1s ease-in-out !important;
-  opacity: 0 !important;
-}
-
-.carousel-item.active {
-  transform: translateX(0) !important;
-  opacity: 1 !important;
-}
-
-.carousel-item-prev,
-.carousel-item-next {
-  transform: translateX(0) !important;
-  opacity: 0  !important;
-}
-
-.carousel-item-prev.carousel-item-left,
-.carousel-item-next.carousel-item-right {
-  transform: translateX(0) !important;
-  opacity: 1 !important;
+  .carousel {
+    width: 100%;
+    margin-top: 60px;
+  }
 }

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import '../Styles/About.css';
+import { Carousel } from 'react-bootstrap';
 
 const About = () => {
   const [images, setImages] = useState<string[]>([]);
@@ -25,13 +26,13 @@ const About = () => {
   }, []);
 
   // Automatické otáčení obrázků
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setActiveIndex((prevIndex) => (prevIndex === images.length - 1 ? 0 : prevIndex + 1));
-    }, 3000); // Změna obrázku každé 3 sekundy
+  // useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     setActiveIndex((prevIndex) => (prevIndex === images.length - 1 ? 0 : prevIndex + 1));
+  //   }, 5000); // Změna obrázku každé 3 sekundy
 
-    return () => clearInterval(interval); // Vyčištění intervalu při odpojení komponenty
-  }, [images.length]);
+  //   return () => clearInterval(interval); // Vyčištění intervalu při odpojení komponenty
+  // }, [images.length]);
 
   // Změna souboru v inputu
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -64,7 +65,7 @@ const About = () => {
     }
   };
 
-  // Funkce pro nastavení aktivního obrázku
+// Funkce pro nastavení aktivního obrázku 
   const handlePrev = () => {
     setActiveIndex((prevIndex) => (prevIndex === 0 ? images.length - 1 : prevIndex - 1));
   };
@@ -73,35 +74,16 @@ const About = () => {
     setActiveIndex((prevIndex) => (prevIndex === images.length - 1 ? 0 : prevIndex + 1));
   };
 
-  return (
+  return ( 
     <div className="about-container">
       {/* Carousel */}
-      <div id="aboutMerWeekend" className="carousel slide" data-ride="carousel">
-        <ol className="carousel-indicators">
-          {images.map((_, index) => (
-            <li
-              key={index}
-              data-target="#aboutMerWeekend"
-              data-slide-to={index}
-              className={index === activeIndex ? 'active' : ''}
-              onClick={() => setActiveIndex(index)}
-            ></li>
-          ))}
-        </ol>
-        <div className="carousel-inner">
-          {images.map((image, index) => (
-            <div key={index} className={`carousel-item ${index === activeIndex ? 'active' : ''}`}>
-              <img src={image} className="d-block w-100" alt={`Foto ${index + 1}`} />
-            </div>
-          ))}
-        </div>
-        <a className="carousel-control-prev" href="#aboutMerWeekend" role="button" onClick={handlePrev}>
-          <span className="carousel-control-prev-icon" aria-hidden="true"></span>
-        </a>
-        <a className="carousel-control-next" href="#aboutMerWeekend" role="button" onClick={handleNext}>
-          <span className="carousel-control-next-icon" aria-hidden="true"></span>
-        </a>
-      </div>
+      <Carousel activeIndex={activeIndex} onSelect={(index) => setActiveIndex(index)} className="carousel slide carousel-fade" >
+        {images.map((image, index) => (
+          <Carousel.Item key={index}>
+            <img src={image} className="d-block w-100" alt={`Foto ${index + 1}`} />
+          </Carousel.Item>
+        ))}
+      </Carousel>
 
       {/* File upload */}
       <div className="upload-section mt-4">

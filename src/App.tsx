@@ -11,35 +11,43 @@ import PrivateRoute from './Components/PrivateRoute';
 
 const App = () => {
   const [isAuth, setIsAuth] = useState(false);
-  
+
   const backgroundImageStyle: CSSProperties = {
     backgroundImage: `url(${process.env.PUBLIC_URL}/images/imghlavicka.jpg)`,
     backgroundSize: 'cover',
     backgroundPosition: 'center',
-    width: '100%',
-    height: '100vh',
+    backgroundAttachment: 'fixed',
+    minHeight: '100vh',
     position: 'relative'
+  };
+
+  const contentStyle: CSSProperties = {
+    position: 'relative',
+    zIndex: 2,
+    padding: '20px'
   };
 
   return (
     <div style={backgroundImageStyle}>
-    <Router>
-      <Routes>
-        <Route path="/" element={<Layout><Home /></Layout>} />
-        <Route path="/about" element={<Layout><About /></Layout>} />
-        <Route path="/program" element={<Layout><Program/></Layout> } />
-        <Route path="/contact" element={<Layout><Contact/></Layout> } />
-        <Route path="/login" element={<Layout><Login setAuth={setIsAuth}/> </Layout>} />
-        <Route
-          path="/admin"
-          element={
-            <PrivateRoute>
-              <Admin />
-            </PrivateRoute>
-          }
-        />
-      </Routes>
-    </Router>
+      <div style={contentStyle}>
+        <Router>
+          <Routes>
+            <Route path="/" element={<Layout><Home /></Layout>} />
+            <Route path="/about" element={<Layout><About /></Layout>} />
+            <Route path="/program" element={<Layout><Program /></Layout>} />
+            <Route path="/contact" element={<Layout><Contact /></Layout>} />
+            <Route path="/login" element={<Layout><Login setAuth={setIsAuth} /></Layout>} />
+            <Route
+              path="/admin"
+              element={
+                <PrivateRoute>
+                  <Admin />
+                </PrivateRoute>
+              }
+            />
+          </Routes>
+        </Router>
+      </div>
     </div>
   );
 };

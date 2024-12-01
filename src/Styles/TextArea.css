@@ -23,6 +23,17 @@ textarea {
   resize: none; /* Zakáže změnu velikosti */
   overflow: hidden; /* Skryje posuvníky */
 }
+.text-editor {
+  width: 100%; /* Šířka textové oblasti podle kontejneru */
+  background-color: transparent !important;
+  color: white; /* Bílý text */
+  padding: 10px;
+  font-size: 16px;
+  border: none;
+  resize: none; /* Zakáže změnu velikosti */
+  overflow: hidden; /* Skryje posuvníky */
+  min-height: 200px; /* Minimální výška textové oblasti */
+}
 
 /* Styl pro Bionic text */
 .bionic-text b {

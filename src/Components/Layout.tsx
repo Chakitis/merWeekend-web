@@ -4,10 +4,11 @@ import Footer from '../Pages/Footer';
 import NavBar from './Navbar';
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
+
   return (
     <div>
       <NavBar/>
-      <div className="content">
+      <div className="content" >
         {children}
       </div>
       <Footer />

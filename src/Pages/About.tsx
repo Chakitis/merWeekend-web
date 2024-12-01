@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import '../Styles/About.css';
 import { Carousel } from 'react-bootstrap';
+import TextArea from '../Components/TextArea';
 
 const About = () => {
   const [images, setImages] = useState<{ url: string, contentType: string, id: string }[]>([]);
@@ -13,7 +14,7 @@ const About = () => {
   useEffect(() => {
     const fetchImages = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/images');
+        const response = await axios.get('/api/images');
         setImages(response.data);
       } catch (error) {
         console.error('Chyba při načítání obrázků:', error);
@@ -42,7 +43,7 @@ const About = () => {
     formData.append('image', newImage); // Klíč musí být `image`, protože to očekává backend
 
     try {
-      const response = await axios.post('http://localhost:5000/api/images/upload', formData, {
+      const response = await axios.post('/api/images/upload', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -58,7 +59,7 @@ const About = () => {
   const handleDelete = async (id: string) => {
     try {
       // Volání na server pro smazání obrázku
-      await axios.delete(`http://localhost:5000/api/images/${id}`);
+      await axios.delete(`/api/images/${id}`);
 
       // Aktualizace stavu po smazání obrázku
       setImages((prev) => prev.filter((image) => image.id !== id));
@@ -121,6 +122,7 @@ const About = () => {
           </div>
         </div>
       )}
+      <TextArea />
     </div>
   );
 };

@@ -5,7 +5,8 @@ const dotenv = require('dotenv');
 const path = require('path');
 const bodyParser = require('body-parser');
 const authRoutes = require('./routes/authRoutes');
-const uploadRoutes = require('./routes/uploadRoutes'); // Import image routes
+const uploadRoutes = require('./routes/uploadRoutes');
+const carouselTextRoutes = require('./routes/carouselTextRoutes');
 
 dotenv.config();
 
@@ -25,6 +26,7 @@ app.use(bodyParser.urlencoded({ limit: '50mb', extended: true })); // Middleware
 // Použití rout
 app.use('/api/auth', authRoutes);
 app.use('/api/images', uploadRoutes);
+app.use('/api/text', carouselTextRoutes);
 
 // Statická složka pro obrázky
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));

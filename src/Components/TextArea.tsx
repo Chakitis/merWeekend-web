@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { isAuthenticated } from '../utils/auth';
 import '../Styles/TextArea.css';
 
 const TextEditor = () => {
@@ -86,7 +87,12 @@ const TextEditor = () => {
   // Uložení textu do databáze
   const saveText = async () => {
     try {
-      await axios.post('/api/text/save', { content: text });
+      const token = sessionStorage.getItem('token');
+      await axios.post('/api/text/save', { content: text }, {
+        headers: {
+          'Authorization': token ? `Bearer ${token}` : '',
+        },
+      });
       console.log('Text byl úspěšně uložen!');
     } catch (error) {
       console.error('Chyba při ukládání textu:', error);
@@ -121,17 +127,19 @@ const TextEditor = () => {
       ></div>
 
       {/* Ovládací tlačítka */}
-      <div className="editor-controls">
-        <button
-          onClick={() => {
-            toggleEdit();
-            if (isEditable) saveText();
-          }}
-          className="btn"
-        >
-          {isEditable ? 'Uložit změny' : 'Upravit text'}
-        </button>
-      </div>
+      {isAuthenticated() && (
+        <div className="editor-controls">
+          <button
+            onClick={() => {
+              toggleEdit();
+              if (isEditable) saveText();
+            }}
+            className="btn"
+          >
+            {isEditable ? 'Uložit změny' : 'Upravit text'}
+          </button>
+        </div>
+      )}
 
       {/* Tlačítko pro zapnutí Bionic písma */}
       <div className="bionic-controls">

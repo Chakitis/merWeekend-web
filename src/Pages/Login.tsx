@@ -37,7 +37,7 @@ const Login = ({ setAuth }: LoginProps) => {
         <h2>Přihlášení</h2>
         <form onSubmit={handleLogin} className="login-form">
           <div className="form-group">
-            <label htmlFor="username">Login:</label>
+            <label htmlFor="username">Uživatelské jméno:</label>
             <input
               id="username"
               type="text"

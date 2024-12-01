@@ -1,7 +1,8 @@
 const express = require('express');
 const multer = require('multer');
 const mongoose = require('mongoose');
-const CarouselImage = require('../models/CarouselImage'); 
+const CarouselImage = require('../models/CarouselImage');
+const authMiddleware = require('../middleware/authMiddleware');
 
 const router = express.Router();
 
@@ -11,7 +12,7 @@ const storage = multer.memoryStorage();
 const upload = multer({ storage });
 
 // Endpoint pro nahrávání obrázků
-router.post('/upload', upload.single('image'), async (req, res) => {
+router.post('/upload', authMiddleware, upload.single('image'), async (req, res) => {
   try {
     if (!req.file) {
       return res.status(400).send('No file uploaded.');
@@ -44,7 +45,7 @@ router.get('/', async (req, res) => {
 });
 
 // Endpoint pro mazání obrázků
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', authMiddleware, async (req, res) => {
   const { id } = req.params;
 
   // Zkontrolujte, zda je ID platný ObjectId

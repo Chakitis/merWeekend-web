@@ -1,11 +1,12 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const CarouselText = require('../models/CarouselText');
+const authMiddleware = require('../middleware/authMiddleware');
 
 const router = express.Router();
 
 // Endpoint pro ukládání textu
-router.post('/save', async (req, res) => {
+router.post('/save', authMiddleware, async (req, res) => {
   const { content } = req.body;
 
   try {

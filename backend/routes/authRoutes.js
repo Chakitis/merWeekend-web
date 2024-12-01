@@ -1,56 +1,35 @@
 const express = require('express');
-const User = require('../models/User');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
-const auth = require('../middleware/auth');
+const User = require('../models/User');
+const Token = require('../models/Token');
 
 const router = express.Router();
 
-// Registrace admin účtu
-router.post('/register', async (req, res) => {
-  const { username, password } = req.body;
-
-  try {
-    const existingUser = await User.findOne({ username });
-    if (existingUser) {
-      return res.status(400).json({ message: 'User already exists' });
-    }
-
-    const newUser = new User({ username, password });
-    await newUser.save();
-
-    return res.status(201).json({ message: 'Admin account created' });
-  } catch (error) {
-    return res.status(500).json({ message: 'Error creating user' });
-  }
-});
-
-// Přihlášení admina
 router.post('/login', async (req, res) => {
   const { username, password } = req.body;
 
   try {
     const user = await User.findOne({ username });
     if (!user) {
-      return res.status(400).json({ message: 'User not found' });
+      return res.status(400).json({ message: 'Uživatel nenalezen.' });
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      return res.status(400).json({ message: 'Invalid password' });
+      return res.status(400).json({ message: 'Nesprávné heslo.' });
     }
 
-    const token = jwt.sign({ userId: user._id }, 'your_jwt_secret', { expiresIn: '1h' });
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+console.log('token', token);
+    const newToken = new Token({ token, userId: user._id });
+    await newToken.save();
 
-    return res.json({ token });
+    res.status(200).json({ token });
   } catch (error) {
-    return res.status(500).json({ message: 'Login failed' });
+    console.error('Chyba při přihlášení:', error);
+    res.status(500).json({ message: 'Chyba při přihlášení.' });
   }
-});
-
-// Chráněná routa
-router.get('/protected', auth, (req, res) => {
-  res.send('This is a protected route');
 });
 
 module.exports = router;

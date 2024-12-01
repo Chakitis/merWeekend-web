@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { isAuthenticated } from '../utils/auth';
 import '../Styles/About.css';
 import { Carousel } from 'react-bootstrap';
 import TextArea from '../Components/TextArea';
@@ -43,9 +44,11 @@ const About = () => {
     formData.append('image', newImage); // Klíč musí být `image`, protože to očekává backend
 
     try {
+      const token = sessionStorage.getItem('token');
       const response = await axios.post('/api/images/upload', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
+          'Authorization': token ? token : '',
         },
       });
       const newImageUrl = `data:${response.data.contentType};base64,${response.data.image}`;
@@ -58,8 +61,13 @@ const About = () => {
   // Smazání obrázku
   const handleDelete = async (id: string) => {
     try {
+      const token = sessionStorage.getItem('token');
       // Volání na server pro smazání obrázku
-      await axios.delete(`/api/images/${id}`);
+      await axios.delete(`/api/images/${id}`, {
+        headers: {
+          'Authorization': token ? token : '',
+        },
+      });
 
       // Aktualizace stavu po smazání obrázku
       setImages((prev) => prev.filter((image) => image.id !== id));
@@ -67,19 +75,20 @@ const About = () => {
       console.error('Chyba při mazání obrázku:', error);
     }
   };
-  
 
   return (
     <div className="about-container">
       {/* Tlačítko pro přepnutí mezi režimem zobrazení a úpravy */}
-      <div className="edit-toggle">
-        <button
-          onClick={() => setIsEditing((prev) => !prev)}
-          className="btn btn-secondary mb-3"
-        >
-          {isEditing ? 'Ukončit úpravy' : 'Upravit Carousel'}
-        </button>
-      </div>
+      {isAuthenticated() && (
+        <div className="edit-toggle">
+          <button
+            onClick={() => setIsEditing((prev) => !prev)}
+            className="btn btn-secondary mb-3"
+          >
+            {isEditing ? 'Ukončit úpravy' : 'Upravit Carousel'}
+          </button>
+        </div>
+      )}
 
       {/* Carousel */}
       {!isEditing && (

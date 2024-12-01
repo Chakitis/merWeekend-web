@@ -1,6 +1,6 @@
 /* Kontejner pro video přehrávač */
 .video-player-container {
-  background-color: #051f48; /* Barva pozadí */
+  background-color: rgba(5, 31, 72, 0.7); 
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);

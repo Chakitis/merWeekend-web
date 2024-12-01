@@ -1,11 +1,11 @@
 const express = require('express');
 const multer = require('multer');
-const CarouselImage = require('../models/CarouselImage'); // Import modelu Image
+const CarouselImage = require('../models/CarouselImage'); 
 
 const router = express.Router();
 
 // Multer - konfigurace úložiště
-const storage = multer.memoryStorage(); // Ukládání pouze v paměti
+const storage = multer.memoryStorage(); 
 
 const upload = multer({ storage });
 
@@ -38,6 +38,21 @@ router.get('/', async (req, res) => {
   } catch (error) {
     console.error('Chyba při načítání obrázků:', error);
     res.status(500).json({ message: 'Chyba při načítání obrázků.' });
+  }
+});
+
+// Endpoint pro mazání obrázků
+router.delete('/:id', async (req, res) => {
+  try {
+    const image = await CarouselImage.findById(req.params.id);
+    if (!image) {
+      return res.status(404).json({ message: 'Obrázek nebyl nalezen.' });
+    }
+    await image.remove();
+    res.status(200).json({ message: 'Obrázek byl smazán.' });
+  } catch (error) {
+    console.error('Chyba při mazání obrázku:', error);
+    res.status(500).json({ message: 'Chyba při mazání obrázku.' });
   }
 });
 

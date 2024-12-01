@@ -2,21 +2,26 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 80px;
+  padding: 110px;
 }
 
 .carousel {
-  width: 50%; /* Šířka carouselu */
+  width: 40%; /* Šířka carouselu */
   margin: auto;
+  background-color: rgba(5, 31, 72, 0.7); 
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
 .carousel img {
-  height: 400px; /* Nastavení výšky obrázků */
-  object-fit: cover; /* Zachování poměru stran */
+  max-width: 100%; /* Maximální šířka obrázku */
+  max-height: 400px; /* Maximální výška obrázku */
+  object-fit: contain; /* Zachování poměru stran */
 }
 
 .upload-section {
-  margin-top: 20px;
+  margin-top: 40px;
 }
 
 input[type="file"] {

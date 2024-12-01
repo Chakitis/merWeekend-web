@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import '../Styles/About.css';
 import { Carousel } from 'react-bootstrap';
+import TextArea from '../Components/TextArea';
 
 const About = () => {
   const [images, setImages] = useState<string[]>([]);
@@ -65,14 +66,6 @@ const About = () => {
     }
   };
 
-// Funkce pro nastavení aktivního obrázku 
-  const handlePrev = () => {
-    setActiveIndex((prevIndex) => (prevIndex === 0 ? images.length - 1 : prevIndex - 1));
-  };
-
-  const handleNext = () => {
-    setActiveIndex((prevIndex) => (prevIndex === images.length - 1 ? 0 : prevIndex + 1));
-  };
 
   return ( 
     <div className="about-container">
@@ -84,6 +77,7 @@ const About = () => {
           </Carousel.Item>
         ))}
       </Carousel>
+      <TextArea />
 
       {/* File upload */}
       <div className="upload-section mt-4">

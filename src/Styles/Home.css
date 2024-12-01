@@ -102,6 +102,9 @@
   .custom-navbar {
     justify-content: space-between;
   }
+  .navbar-icon {
+    color: #fcc31a !important;
+  }
 
   .navbar-toggler {
     margin-left: auto;

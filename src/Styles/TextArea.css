@@ -1,0 +1,75 @@
+/* Sekce textového editoru */
+.text-area-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 2rem auto;
+  width: 40%;
+  background-color: rgba(4, 29, 70, 0.9);
+  color: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Textový editor */
+textarea {
+  width: 100%; /* Šířka textové oblasti podle kontejneru */
+  background-color: transparent !important;
+  color: white; /* Bílý text */
+  padding: 10px;
+  font-size: 16px;
+  border: none;
+  resize: none; /* Zakáže změnu velikosti */
+  overflow: hidden; /* Skryje posuvníky */
+}
+
+/* Styl pro Bionic text */
+.bionic-text b {
+  font-weight: bold;
+}
+
+/* Toolbar */
+.toolbar {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+/* Ovládací tlačítka */
+.editor-controls,
+.bionic-controls {
+  margin-top: 15px;
+}
+
+.btn {
+  padding: 10px 20px;
+  font-size: 16px;
+  color: white !important;
+  background-color: #011c44 !important;
+  border: none !important;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+/* Hover efekt pro tlačítka */
+.btn:hover {
+  background-color: #1d6ee7 !important;
+  transform: translateY(-2px);
+}
+textarea:focus {
+  outline: none;
+}
+
+textarea[readonly] {
+  resize: none; 
+}
+span[style*="font-size: 2em"] {
+  color: #fcc31a; /* H1 barva */
+}
+
+span[style*="font-size: 1.5em"] {
+  color: #fcc31a; /* H2 barva */
+}

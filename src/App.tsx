@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { useState } from 'react';
+import { CSSProperties, useState } from 'react';
 import Home from './Pages/Home';
 import About from './Pages/About';
 import Contact from './Pages/Contact';
@@ -11,8 +11,18 @@ import PrivateRoute from './Components/PrivateRoute';
 
 const App = () => {
   const [isAuth, setIsAuth] = useState(false);
+  
+  const backgroundImageStyle: CSSProperties = {
+    backgroundImage: `url(${process.env.PUBLIC_URL}/images/imghlavicka.jpg)`,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    width: '100%',
+    height: '100vh',
+    position: 'relative'
+  };
 
   return (
+    <div style={backgroundImageStyle}>
     <Router>
       <Routes>
         <Route path="/" element={<Layout><Home /></Layout>} />
@@ -30,6 +40,7 @@ const App = () => {
         />
       </Routes>
     </Router>
+    </div>
   );
 };
 

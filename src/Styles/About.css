@@ -37,3 +37,23 @@ input[type="file"] {
     margin-top: 60px;
   }
 }
+.image-thumbnail {
+  width: 100px;  /* Nastavte šířku náhledu */
+  height: auto;  /* Udržuje správný poměr stran */
+  margin-right: 10px; /* Vzdálenost mezi obrázky */
+}
+
+.image-item {
+  display: inline-block;
+  margin-bottom: 10px;
+}
+
+.image-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.upload-section {
+  margin-top: 20px;
+}

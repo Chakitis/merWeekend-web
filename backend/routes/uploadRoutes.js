@@ -1,5 +1,6 @@
 const express = require('express');
 const multer = require('multer');
+const mongoose = require('mongoose');
 const CarouselImage = require('../models/CarouselImage'); 
 
 const router = express.Router();
@@ -34,6 +35,7 @@ router.get('/', async (req, res) => {
     res.status(200).json(images.map(image => ({
       url: image.image ? `data:${image.contentType};base64,${image.image.toString('base64')}` : null,
       contentType: image.contentType,
+      id: image._id,
     })));
   } catch (error) {
     console.error('Chyba při načítání obrázků:', error);
@@ -43,16 +45,22 @@ router.get('/', async (req, res) => {
 
 // Endpoint pro mazání obrázků
 router.delete('/:id', async (req, res) => {
+  const { id } = req.params;
+
+  // Zkontrolujte, zda je ID platný ObjectId
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(400).send({ message: 'Neplatný formát ID' });
+  }
+
   try {
-    const image = await CarouselImage.findById(req.params.id);
-    if (!image) {
-      return res.status(404).json({ message: 'Obrázek nebyl nalezen.' });
+    const result = await CarouselImage.findByIdAndDelete(id);
+    if (!result) {
+      return res.status(404).send({ message: 'Obrázek nenalezen' });
     }
-    await image.remove();
-    res.status(200).json({ message: 'Obrázek byl smazán.' });
+    res.status(200).send({ message: 'Obrázek byl úspěšně smazán' });
   } catch (error) {
-    console.error('Chyba při mazání obrázku:', error);
-    res.status(500).json({ message: 'Chyba při mazání obrázku.' });
+    console.error(error);
+    res.status(500).send({ message: 'Chyba při mazání obrázku' });
   }
 });
 

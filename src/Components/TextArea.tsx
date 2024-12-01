@@ -24,13 +24,30 @@ const TextEditor = () => {
 
   // Konverze textu na Bionic
   const convertToBionic = (text: string) => {
-    return text
-      .split(" ")
-      .map((word) => {
-        const mid = Math.ceil(word.length / 2);
-        return `<b>${word.slice(0, mid)}</b>${word.slice(mid)}`;
-      })
-      .join(" ");
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(text, "text/html");
+
+    const traverse = (node: ChildNode) => {
+      if (node.nodeType === Node.TEXT_NODE) {
+        const words = node.textContent?.split(" ") || [];
+        const bionicWords = words.map((word) => {
+          const mid = Math.ceil(word.length / 2);
+          return `<b>${word.slice(0, mid)}</b>${word.slice(mid)}`;
+        });
+        const bionicText = bionicWords.join(" ");
+        const span = document.createElement("span");
+        span.innerHTML = bionicText;
+        node.replaceWith(span);
+      } else if (node.nodeType === Node.ELEMENT_NODE) {
+        const element = node as HTMLElement;
+        if (!["H1", "H2", "B"].includes(element.tagName)) {
+          Array.from(node.childNodes).forEach(traverse);
+        }
+      }
+    };
+
+    Array.from(doc.body.childNodes).forEach(traverse);
+    return doc.body.innerHTML;
   };
 
   // Aplikace formátování na vybraný text

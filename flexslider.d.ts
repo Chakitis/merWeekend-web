@@ -1,1 +1,0 @@
-declare module 'flexslider' { interface FlexSliderOptions { slideshow?: boolean; slideshowSpeed?: number; animationSpeed?: number; controlNav?: boolean; } interface JQuery { flexslider(options?: FlexSliderOptions): JQuery; } }

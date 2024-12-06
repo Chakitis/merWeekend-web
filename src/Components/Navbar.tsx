@@ -12,6 +12,7 @@ const NavBar = () => {
             <Nav.Link href="/" className="custom-nav-link">Domů</Nav.Link>
             <Nav.Link href="/program" className="custom-nav-link">Program</Nav.Link>
             <Nav.Link href="/about" className="custom-nav-link">O MerWeekend</Nav.Link>
+            <Nav.Link href="/event-location" className="custom-nav-link">Místo konání</Nav.Link>
             <Nav.Link href="/contact" className="custom-nav-link">Kontakt</Nav.Link>
             <Nav.Link href="/login" className="custom-nav-link">Přihlášení</Nav.Link>
           </Nav>

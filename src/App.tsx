@@ -6,6 +6,7 @@ import Contact from './Pages/Contact';
 import Program from './Pages/Program';
 import Login from './Pages/Login';
 import Admin from './Pages/Admin';
+import EventLocation from './Pages/EventLocation';
 import Layout from './Components/Layout';
 import PrivateRoute from './Components/PrivateRoute';
 
@@ -35,6 +36,7 @@ const App = () => {
             <Route path="/" element={<Layout><Home /></Layout>} />
             <Route path="/about" element={<Layout><About /></Layout>} />
             <Route path="/program" element={<Layout><Program /></Layout>} />
+            <Route path="/event-location" element={<Layout><EventLocation /></Layout>} />
             <Route path="/contact" element={<Layout><Contact /></Layout>} />
             <Route path="/login" element={<Layout><Login setAuth={setIsAuth} /></Layout>} />
             <Route

@@ -1,7 +1,6 @@
 const express = require('express');
-const mongoose = require('mongoose');
-const CarouselText = require('../models/CarouselText');
-const authMiddleware = require('../middleware/authMiddleware');
+const EventLocationText = require('../models/EventLocationText');
+const authMiddleware = require('../middleware/authMiddleware'); // Import auth middleware
 
 const router = express.Router();
 
@@ -10,12 +9,12 @@ router.post('/text', authMiddleware, async (req, res) => {
   const { content } = req.body;
 
   try {
-    const existingText = await CarouselText.findOne();
+    const existingText = await EventLocationText.findOne();
     if (existingText) {
       existingText.content = content;
       await existingText.save();
     } else {
-      const newTextContent = new CarouselText({ content });
+      const newTextContent = new EventLocationText({ content });
       await newTextContent.save();
     }
     res.status(200).json({ message: 'Text byl úspěšně uložen!' });
@@ -26,9 +25,9 @@ router.post('/text', authMiddleware, async (req, res) => {
 });
 
 // Endpoint pro načítání textu
-router.get('/', async (req, res) => {
+router.get('/text', async (req, res) => {
   try {
-    const textContent = await CarouselText.findOne();
+    const textContent = await EventLocationText.findOne();
     res.status(200).json(textContent);
   } catch (error) {
     console.error('Chyba při načítání textu:', error);

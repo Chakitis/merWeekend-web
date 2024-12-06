@@ -7,6 +7,7 @@ const bodyParser = require('body-parser');
 const authRoutes = require('./routes/authRoutes');
 const uploadRoutes = require('./routes/uploadRoutes');
 const carouselTextRoutes = require('./routes/carouselTextRoutes');
+const eventLocationTextRoutes = require('./routes/EventLocationTextRoutes');
 
 dotenv.config();
 
@@ -26,7 +27,8 @@ app.use(bodyParser.urlencoded({ limit: '50mb', extended: true })); // Middleware
 // Použití rout
 app.use('/api/auth', authRoutes);
 app.use('/api/images', uploadRoutes);
-app.use('/api/text', carouselTextRoutes);
+app.use('/api/about', carouselTextRoutes);
+app.use('/api/eventLocation', eventLocationTextRoutes);
 
 // Statická složka pro obrázky
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));

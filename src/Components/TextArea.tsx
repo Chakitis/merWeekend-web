@@ -1,37 +1,27 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { isAuthenticated } from '../utils/auth';
+import React, { useState } from 'react';
 import '../Styles/TextArea.css';
 
-const TextEditor = () => {
-  const [text, setText] = useState<string>('Původní text pro zobrazení a úpravy.');
-  const [isEditable, setIsEditable] = useState<boolean>(false); // Režim editace
+interface TextAreaProps {
+  text: string;
+  onTextChange: (newText: string) => void;
+  onSave: (text: string) => void;
+}
+
+const TextArea: React.FC<TextAreaProps> = ({ text, onTextChange, onSave }) => {
+  const [isEditable, setIsEditable] = useState<boolean>(false);
   const [isBionic, setIsBionic] = useState<boolean>(() => {
-    return localStorage.getItem('bionicEnabled') === 'true'; // Načtení z localStorage
+    return localStorage.getItem('bionicEnabled') === 'true';
   });
 
-  useEffect(() => {
-    // Načtení textu z databáze při načtení komponenty
-    const fetchText = async () => {
-      try {
-        const response = await axios.get('/api/text');
-        if (response.data) {
-          setText(response.data.content);
-        }
-      } catch (error) {
-        console.error('Chyba při načítání textu:', error);
-      }
-    };
-
-    fetchText();
-  }, []);
-
-  // Přepnutí režimu editace
-  const toggleEdit = () => {
-    setIsEditable((prev) => !prev);
+  const isAuthenticated = () => {
+    return sessionStorage.getItem('token') !== null;
   };
 
-  // Přepnutí režimu Bionic
+  const toggleEdit = () => {
+    setIsEditable((prev) => !prev);
+    if (isEditable) onSave(text);
+  };
+
   const toggleBionic = () => {
     setIsBionic((prev) => {
       const newValue = !prev;
@@ -40,7 +30,6 @@ const TextEditor = () => {
     });
   };
 
-  // Konverze textu na Bionic
   const convertToBionic = (text: string) => {
     const parser = new DOMParser();
     const doc = parser.parseFromString(text, 'text/html');
@@ -68,7 +57,6 @@ const TextEditor = () => {
     return doc.body.innerHTML;
   };
 
-  // Aplikace formátování na vybraný text
   const applyFormatting = (command: keyof CSSStyleDeclaration, value: string) => {
     const selection = window.getSelection();
     if (!selection || selection.rangeCount === 0) return;
@@ -79,29 +67,13 @@ const TextEditor = () => {
     range.surroundContents(span);
   };
 
-  // Uložení obsahu textu (pro budoucí použití)
-  const handleContentChange = (e: React.FormEvent<HTMLDivElement>) => {
-    setText(e.currentTarget.innerHTML);
-  };
-
-  // Uložení textu do databáze
-  const saveText = async () => {
-    try {
-      const token = sessionStorage.getItem('token');
-      await axios.post('/api/text/save', { content: text }, {
-        headers: {
-          'Authorization': token ? `Bearer ${token}` : '',
-        },
-      });
-      console.log('Text byl úspěšně uložen!');
-    } catch (error) {
-      console.error('Chyba při ukládání textu:', error);
-    }
+  const handleContentChange = (event: React.FormEvent<HTMLDivElement>) => {
+    const target = event.target as HTMLDivElement;
+    onTextChange(target.innerHTML);
   };
 
   return (
     <div className="text-area-section">
-      {/* Toolbar pouze pro admina */}
       {isEditable && (
         <div className="toolbar">
           <button onClick={() => applyFormatting('fontWeight', 'bold')} className="btn">
@@ -116,39 +88,33 @@ const TextEditor = () => {
         </div>
       )}
 
-      {/* Textová oblast */}
       <div
         className={`text-editor ${isBionic ? 'bionic-text' : ''}`}
         contentEditable={isEditable}
         dangerouslySetInnerHTML={{
           __html: isBionic ? convertToBionic(text) : text,
         }}
-        onInput={handleContentChange} // Sleduje změny obsahu
+        onInput={handleContentChange}
       ></div>
 
-      {/* Ovládací tlačítka */}
       {isAuthenticated() && (
         <div className="editor-controls">
           <button
             onClick={() => {
               toggleEdit();
-              if (isEditable) saveText();
+              if (isEditable) onSave(text);
             }}
             className="btn"
           >
             {isEditable ? 'Uložit změny' : 'Upravit text'}
           </button>
+          <button onClick={toggleBionic} className="btn">
+            {isBionic ? 'Vypnout přizpůsobení pro ADHD' : 'Přizpůsobení pro ADHD'}
+          </button>
         </div>
       )}
-
-      {/* Tlačítko pro zapnutí Bionic písma */}
-      <div className="bionic-controls">
-        <button onClick={toggleBionic} className="btn">
-          {isBionic ? 'Vypnout přizpůsobení pro ADHD' : 'Přizpůsobení pro ADHD'}
-        </button>
-      </div>
     </div>
   );
 };
 
-export default TextEditor;
+export default TextArea;

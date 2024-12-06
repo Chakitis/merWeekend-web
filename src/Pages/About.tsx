@@ -7,9 +7,10 @@ import TextArea from '../Components/TextArea';
 
 const About = () => {
   const [images, setImages] = useState<{ url: string, contentType: string, id: string }[]>([]);
+  const [text, setText] = useState<string>('');
   const [newImage, setNewImage] = useState<File | null>(null);
   const [activeIndex, setActiveIndex] = useState(0);
-  const [isEditing, setIsEditing] = useState(false); // Stav pro režim úpravy
+  const [isEditing, setIsEditing] = useState(false); 
 
   // Načtení obrázků z databáze
   useEffect(() => {
@@ -24,7 +25,22 @@ const About = () => {
 
     fetchImages();
   }, []);
-
+    // Načtení textu z databáze
+    useEffect(() => {
+      const fetchText = async () => {
+        try {
+          const response = await axios.get('/api/about');
+          if (response.data) {
+            setText(response.data.content);
+          }
+        } catch (error) {
+          console.error('Chyba při načítání textu:', error);
+        }
+      };
+  
+      fetchText();
+    }, []);
+console.log(text, 'text');
   // Změna souboru v inputu
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
@@ -73,6 +89,28 @@ const About = () => {
       setImages((prev) => prev.filter((image) => image.id !== id));
     } catch (error) {
       console.error('Chyba při mazání obrázku:', error);
+    }
+  };
+  //uložení textu
+  const handleTextChange = (newText: string) => {
+    setText(newText);
+  };
+
+  const saveText = async (text: string) => {
+    try {
+      const token = sessionStorage.getItem('token');
+      await axios.post(
+        '/api/about/text',
+        { content: text },
+        {
+          headers: {
+            Authorization: token ? `Bearer ${token}` : '',
+          },
+        }
+      );
+      console.log('Text byl úspěšně uložen!');
+    } catch (error) {
+      console.error('Chyba při ukládání textu:', error);
     }
   };
 
@@ -131,7 +169,7 @@ const About = () => {
           </div>
         </div>
       )}
-      <TextArea />
+      <TextArea text={text} onTextChange={handleTextChange} onSave={saveText} />
     </div>
   );
 };

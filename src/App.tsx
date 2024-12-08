@@ -26,7 +26,6 @@ const App = () => {
   const contentStyle: CSSProperties = {
     position: 'relative',
     zIndex: 2,
-    padding: '20px'
   };
 
   return (

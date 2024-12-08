@@ -86,6 +86,22 @@
   background-color: rgba(255, 255, 255, 0.3) !important;
   color: #fcc31a !important;
 }
+.layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.content {
+  flex: 1;
+}
+
+.container {
+  width: 100%;
+  max-width: 1200px;
+  padding: 20px;
+  border-radius: 10px;
+}
 
 /* Media Queries pro responzivní design */
 @media (max-width: 768px) {

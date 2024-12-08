@@ -73,7 +73,6 @@ const Program = () => {
 
   return (
     <div className="program-container">
-      <h1>Program</h1>
       {isAuthenticated() && (
         <div className="upload-section">
           <form onSubmit={handleUpload}>

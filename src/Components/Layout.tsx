@@ -14,7 +14,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
   }, []);
 
   return (
-    <div>
+    <div className="layout">
       <NavBar />
       <div className="content">
         <div className="container">

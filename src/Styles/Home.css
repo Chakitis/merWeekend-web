@@ -64,16 +64,9 @@
   color: #fcc31a;
 }
 
-
 /* Navigační lišta */
 .custom-navbar {
   background-color: rgba(4, 29, 70, 0.8) !important;
-}
-
-.custom-nav {
-  list-style: none;
-  display: flex;
-  gap: 1rem;
 }
 
 .custom-nav-link {
@@ -94,9 +87,6 @@
   color: #fcc31a !important;
 }
 
-.logoNB {
-  max-width: 5rem;
-}
 /* Media Queries pro responzivní design */
 @media (max-width: 768px) {
   .custom-navbar {
@@ -108,6 +98,7 @@
 
   .navbar-toggler {
     margin-left: auto;
+    background-color: #fcc31a60 !important;
   }
 
   .custom-nav {

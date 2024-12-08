@@ -40,7 +40,7 @@ const About = () => {
   
       fetchText();
     }, []);
-console.log(text, 'text');
+
   // Změna souboru v inputu
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {

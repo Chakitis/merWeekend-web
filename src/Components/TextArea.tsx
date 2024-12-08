@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import '../Styles/TextArea.css';
 
 interface TextAreaProps {
@@ -13,13 +13,15 @@ const TextArea: React.FC<TextAreaProps> = ({ text, onTextChange, onSave }) => {
     return localStorage.getItem('bionicEnabled') === 'true';
   });
 
+  const editorRef = useRef<HTMLDivElement>(null);
+
   const isAuthenticated = () => {
     return sessionStorage.getItem('token') !== null;
   };
 
   const toggleEdit = () => {
     setIsEditable((prev) => !prev);
-    if (isEditable) onSave(text);
+    if (isEditable) onSave(editorRef.current?.innerHTML || '');
   };
 
   const toggleBionic = () => {
@@ -57,52 +59,118 @@ const TextArea: React.FC<TextAreaProps> = ({ text, onTextChange, onSave }) => {
     return doc.body.innerHTML;
   };
 
-  const applyFormatting = (command: keyof CSSStyleDeclaration, value: string) => {
-    const selection = window.getSelection();
-    if (!selection || selection.rangeCount === 0) return;
-
-    const range = selection.getRangeAt(0);
-    const span = document.createElement('span');
-    (span.style as any)[command] = value;
-    range.surroundContents(span);
+  const handleContentChange = () => {
+    if (editorRef.current) {
+      const currentText = editorRef.current.innerHTML;
+      onTextChange(currentText);
+    }
   };
 
-  const handleContentChange = (event: React.FormEvent<HTMLDivElement>) => {
-    const target = event.target as HTMLDivElement;
-    onTextChange(target.innerHTML);
+  const saveCaretPosition = () => {
+    const sel = window.getSelection();
+    if (sel && sel.rangeCount > 0) {
+      const range = sel.getRangeAt(0);
+      const preCaretRange = range.cloneRange();
+      preCaretRange.selectNodeContents(editorRef.current!);
+      preCaretRange.setEnd(range.endContainer, range.endOffset);
+      return preCaretRange.toString().length;
+    }
+    return 0;
   };
+
+  const restoreCaretPosition = (position: number) => {
+    const node = editorRef.current;
+    if (node) {
+      const range = document.createRange();
+      const sel = window.getSelection();
+      let charIndex = 0;
+      let stop = false;
+
+      const traverseNodes = (currentNode: Node) => {
+        if (stop) return;
+
+        if (currentNode.nodeType === 3) { // text node
+          const nextCharIndex = charIndex + currentNode.textContent!.length;
+          if (position >= charIndex && position <= nextCharIndex) {
+            range.setStart(currentNode, position - charIndex);
+            range.setEnd(currentNode, position - charIndex);
+            stop = true;
+          }
+          charIndex = nextCharIndex;
+        } else {
+          for (let i = 0; i < currentNode.childNodes.length; i++) {
+            traverseNodes(currentNode.childNodes[i]);
+          }
+        }
+      };
+
+      traverseNodes(node);
+      sel?.removeAllRanges();
+      sel?.addRange(range);
+    }
+  };
+
+  const toggleStyle = (command: string, value?: string) => {
+    if (value) {
+      document.execCommand(command, false, value);
+    } else {
+      document.execCommand(command);
+    }
+  };
+  
+  const isStyleActive = (command: string): boolean => {
+    return document.queryCommandState(command);
+  };
+  
+
+  useEffect(() => {
+    const position = saveCaretPosition();
+    if (editorRef.current && isBionic) {
+      editorRef.current.innerHTML = convertToBionic(text);
+    } else if (editorRef.current) {
+      editorRef.current.innerHTML = text;
+    }
+    restoreCaretPosition(position);
+  }, [text, isBionic]);
 
   return (
     <div className="text-area-section">
       {isEditable && (
         <div className="toolbar">
-          <button onClick={() => applyFormatting('fontWeight', 'bold')} className="btn">
+          <button
+            onClick={() => toggleStyle('bold')}
+            className={`btn ${isStyleActive('bold') ? 'active' : ''}`}
+          >
             Tučně
           </button>
-          <button onClick={() => applyFormatting('fontSize', '2em')} className="btn">
+          <button
+            onClick={() => toggleStyle('formatBlock', 'H1')}
+            className={`btn ${isStyleActive('formatBlock') && editorRef.current?.innerHTML.includes('<h1>') ? 'active' : ''}`}
+          >
             Nadpis H1
           </button>
-          <button onClick={() => applyFormatting('fontSize', '1.5em')} className="btn">
+          <button
+            onClick={() => toggleStyle('formatBlock', 'H2')}
+            className={`btn ${isStyleActive('formatBlock') && editorRef.current?.innerHTML.includes('<h2>') ? 'active' : ''}`}
+          >
             Nadpis H2
           </button>
         </div>
       )}
-
+  
       <div
+        ref={editorRef}
         className={`text-editor ${isBionic ? 'bionic-text' : ''}`}
         contentEditable={isEditable}
-        dangerouslySetInnerHTML={{
-          __html: isBionic ? convertToBionic(text) : text,
-        }}
         onInput={handleContentChange}
       ></div>
-
+  
       {isAuthenticated() && (
         <div className="editor-controls">
           <button
             onClick={() => {
               toggleEdit();
-              if (isEditable) onSave(text);
+              if (isEditable) onSave(editorRef.current?.innerHTML || '');
             }}
             className="btn"
           >
@@ -115,6 +183,7 @@ const TextArea: React.FC<TextAreaProps> = ({ text, onTextChange, onSave }) => {
       )}
     </div>
   );
+  
 };
 
 export default TextArea;

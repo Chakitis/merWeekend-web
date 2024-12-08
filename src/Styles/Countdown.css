@@ -30,7 +30,7 @@
 }
 
 /* Responzivní úpravy pro mobilní zařízení */
-@media (max-width: 767px) {
+@media (max-width: 1370px) {
   .custom-container {
     padding: 15px;
   }
@@ -54,5 +54,37 @@
 
   .custom-link {
     font-size: 1.1rem;
+  }
+  .countdown-time {
+    font-size: 1rem;
+  }
+}
+
+/* Responzivní úpravy pro středně velké monitory */
+@media (min-width: 1341px) and (max-width: 1824px) {
+  .custom-container {
+    padding: 18px;
+    margin: 10px auto;
+  }
+
+  .countdown-time {
+    font-size: 3rem;
+  }
+
+  .countdown-label {
+    font-size: 0.9rem;
+  }
+
+  .custom-link {
+    font-size: 1.2rem;
+  }
+
+  .row {
+    flex-direction: row;
+    justify-content: center;
+  }
+
+  .col-lg-6 {
+    text-align: left;
   }
 }

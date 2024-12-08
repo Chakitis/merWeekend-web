@@ -1,6 +1,6 @@
 
 export const isAuthenticated = () => {
-    return true;
+    return false;
   };
 
 // const jwt = require('jsonwebtoken');

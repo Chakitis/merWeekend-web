@@ -29,7 +29,7 @@ const Countdown = () => {
 
   return (
     <div className="container custom-container">
-      <div className="row">
+      <div className="row align-items-center">
         <div className="col-12 col-lg-6 text-center text-lg-start mb-4 mb-lg-0">
           <h1>MerWeekend 2025</h1>
           <h2>

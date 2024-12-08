@@ -9,6 +9,7 @@ import Admin from './Pages/Admin';
 import EventLocation from './Pages/EventLocation';
 import Layout from './Components/Layout';
 import PrivateRoute from './Components/PrivateRoute';
+import EventRules from './Pages/EventRules';
 
 const App = () => {
   const [isAuth, setIsAuth] = useState(false);
@@ -37,6 +38,7 @@ const App = () => {
             <Route path="/about" element={<Layout><About /></Layout>} />
             <Route path="/program" element={<Layout><Program /></Layout>} />
             <Route path="/event-location" element={<Layout><EventLocation /></Layout>} />
+            <Route path='/event-rules' element={<Layout><EventRules /></Layout>} />
             <Route path="/contact" element={<Layout><Contact /></Layout>} />
             <Route path="/login" element={<Layout><Login setAuth={setIsAuth} /></Layout>} />
             <Route

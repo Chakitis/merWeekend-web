@@ -8,26 +8,15 @@
     align-items: center;
   }
   
-  /* Nadpis */
-  .event-location h1 {
-    color: #0047b0;
-    margin-bottom: 10px;
-    font-size: 24px;
-    text-align: center;
-  }
-  
-  /* Text pod nadpisem */
-  .event-location p {
-    margin: 10px 0;
-    text-align: justify;
-    width: 100%;
-    max-width: 800px; /* Stejná šířka jako mapa */
+
+  .event-location h1, h2 {
+    color: #fcc31a !important;
   }
   
   /* Kontejner mapy s rámečkem */
   .event-location .map-container {
-    background-color: rgba(4, 29, 70, 0.9); /* Barva rámečku */
-    padding: 10px;
+    background-color: rgba(4, 29, 70, 0.7); /* Barva rámečku */
+    padding: 20px;
     border-radius: 8px;
     max-width: 800px;
     width: 100%;
@@ -36,7 +25,7 @@
   
   /* Vnitřní mapa */
   .event-location .map-container .leaflet-container {
-    height: 400px;
+    height: 200px;
     width: 100%;
     border-radius: 8px; /* Zaoblené rohy mapy */
   }

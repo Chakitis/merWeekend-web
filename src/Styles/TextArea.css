@@ -4,12 +4,12 @@
   flex-direction: column;
   align-items: center;
   margin: 2rem auto;
-  width: 40%;
+  min-width: 40%;
   background-color: rgba(4, 29, 70, 0.9);
   color: white;
   padding: 20px;
   border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  /* box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); */
 }
 
 /* Textový editor */
@@ -51,7 +51,14 @@ textarea {
 .editor-controls,
 .bionic-controls {
   margin-top: 15px;
+
 }
+.editor-controls .btn.active,
+.bionic-controls .btn.active {
+  background-color: #fcc31a !important;
+  color: #011c44 !important;
+}
+
 
 .btn {
   padding: 10px 20px;

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
+import { fetchText, fetchImages, uploadImage, deleteImage, replaceImage, saveText } from '../api/eventRulesApi';
 import { isAuthenticated } from '../utils/auth';
 import TextArea from '../Components/TextArea';
 import '../Styles/EventRules.css';
@@ -12,32 +12,30 @@ const EventRules = () => {
 
   // Načtení textu z databáze
   useEffect(() => {
-    const fetchText = async () => {
+    const getText = async () => {
       try {
-        const response = await axios.get('/api/eventRules/text');
-        if (response.data) {
-          setText(response.data.content);
-        }
+        const data = await fetchText();
+        setText(data.content);
       } catch (error) {
         console.error('Chyba při načítání textu:', error);
       }
     };
 
-    fetchText();
+    getText();
   }, []);
 
   // Načtení obrázků z databáze
   useEffect(() => {
-    const fetchImages = async () => {
+    const getImages = async () => {
       try {
-        const response = await axios.get('/api/eventRules/images');
-        setImages(response.data);
+        const data = await fetchImages();
+        setImages(data);
       } catch (error) {
         console.error('Chyba při načítání obrázků:', error);
       }
     };
 
-    fetchImages();
+    getImages();
   }, []);
 
   // Změna souboru v inputu
@@ -55,19 +53,11 @@ const EventRules = () => {
 
     if (!newImage) return;
 
-    const formData = new FormData();
-    formData.append('image', newImage); // Klíč musí být `image`, protože to očekává backend
-
     try {
       const token = sessionStorage.getItem('token');
-      const response = await axios.post('/api/eventRules/images/upload', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-          'Authorization': token ? `Bearer ${token}` : '',
-        },
-      });
-      const newImageUrl = `data:${response.data.contentType};base64,${response.data.image}`;
-      setImages((prev) => [...prev, { url: newImageUrl, contentType: response.data.contentType, id: response.data.id }]);
+      const data = await uploadImage(newImage, token);
+      const newImageUrl = `data:${data.contentType};base64,${data.image}`;
+      setImages((prev) => [...prev, { url: newImageUrl, contentType: data.contentType, id: data.id }]);
     } catch (error) {
       console.error('Chyba při nahrávání obrázku:', error);
     }
@@ -77,13 +67,7 @@ const EventRules = () => {
   const handleDelete = async (id: string) => {
     try {
       const token = sessionStorage.getItem('token');
-      await axios.delete(`/api/eventRules/images/${id}`, {
-        headers: {
-          'Authorization': token ? `Bearer ${token}` : '',
-        },
-      });
-
-      // Aktualizace stavu po smazání obrázku
+      await deleteImage(id, token);
       setImages((prev) => prev.filter((image) => image.id !== id));
     } catch (error) {
       console.error('Chyba při mazání obrázku:', error);
@@ -94,18 +78,10 @@ const EventRules = () => {
     setText(newText);
   };
 
-  const saveText = async (text: string) => {
+  const handleSaveText = async (text: string) => {
     try {
       const token = sessionStorage.getItem('token');
-      await axios.post(
-        '/api/eventRules/text',
-        { content: text },
-        {
-          headers: {
-            Authorization: token ? `Bearer ${token}` : '',
-          },
-        }
-      );
+      await saveText(text, token);
       console.log('Text byl úspěšně uložen!');
     } catch (error) {
       console.error('Chyba při ukládání textu:', error);
@@ -115,19 +91,10 @@ const EventRules = () => {
   const handleReplace = async (id: string, e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
       const newFile = e.target.files[0];
-      const formData = new FormData();
-      formData.append('image', newFile);
-  
       try {
         const token = sessionStorage.getItem('token');
-        const response = await axios.put(`/api/eventRules/images/${id}`, formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-            'Authorization': token ? `Bearer ${token}` : '',
-          },
-        });
-  
-        const newImageUrl = `data:${response.data.contentType};base64,${response.data.image}`;
+        const data = await replaceImage(id, newFile, token);
+        const newImageUrl = `data:${data.contentType};base64,${data.image}`;
         setImages((prev) =>
           prev.map((image) =>
             image.id === id ? { ...image, url: newImageUrl } : image
@@ -211,7 +178,7 @@ const EventRules = () => {
           ))}
         </div>
         <div className="col-md-8">
-          <TextArea text={text} onTextChange={handleTextChange} onSave={saveText} />
+          <TextArea text={text} onTextChange={handleTextChange} onSave={handleSaveText} />
         </div>
         <div className="col-md-2">
           {images.slice(3, 4).map((image) => (

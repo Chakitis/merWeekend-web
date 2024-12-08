@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { isAuthenticated } from '../utils/auth';
 import '../Styles/Program.css';
+import { deleteImage, fetchImages, uploadImage } from '../api/programApi';
 
 const Program = () => {
   const [images, setImages] = useState<{ url: string, contentType: string, id: string }[]>([]);
@@ -9,16 +10,16 @@ const Program = () => {
 
   // Načtení obrázků z databáze
   useEffect(() => {
-    const fetchImages = async () => {
+    const getImages = async () => {
       try {
-        const response = await axios.get('/api/program/images');
-        setImages(response.data);
+        const data = await fetchImages();
+        setImages(data);
       } catch (error) {
         console.error('Chyba při načítání obrázků:', error);
       }
     };
 
-    fetchImages();
+    getImages();
   }, []);
 
   // Změna souboru v inputu
@@ -36,19 +37,11 @@ const Program = () => {
 
     if (!newImage) return;
 
-    const formData = new FormData();
-    formData.append('image', newImage); // Klíč musí být `image`, protože to očekává backend
-
     try {
       const token = sessionStorage.getItem('token');
-      const response = await axios.post('/api/program/images/upload', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-          'Authorization': token ? `Bearer ${token}` : '',
-        },
-      });
-      const newImageUrl = `data:${response.data.contentType};base64,${response.data.image}`;
-      setImages((prev) => [...prev, { url: newImageUrl, contentType: response.data.contentType, id: response.data.id }]);
+      const data = await uploadImage(newImage, token);
+      const newImageUrl = `data:${data.contentType};base64,${data.image}`;
+      setImages((prev) => [...prev, { url: newImageUrl, contentType: data.contentType, id: data.id }]);
     } catch (error) {
       console.error('Chyba při nahrávání obrázku:', error);
     }
@@ -58,13 +51,7 @@ const Program = () => {
   const handleDelete = async (id: string) => {
     try {
       const token = sessionStorage.getItem('token');
-      await axios.delete(`/api/program/images/${id}`, {
-        headers: {
-          'Authorization': token ? `Bearer ${token}` : '',
-        },
-      });
-
-      // Aktualizace stavu po smazání obrázku
+      await deleteImage(id, token);
       setImages((prev) => prev.filter((image) => image.id !== id));
     } catch (error) {
       console.error('Chyba při mazání obrázku:', error);

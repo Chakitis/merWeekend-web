@@ -4,6 +4,7 @@ import { isAuthenticated } from '../utils/auth';
 import '../Styles/About.css';
 import { Carousel } from 'react-bootstrap';
 import TextArea from '../Components/TextArea';
+import { deleteImage, fetchImages, fetchText, saveText, uploadImage } from '../api/aboutApi';
 
 const About = () => {
   const [images, setImages] = useState<{ url: string, contentType: string, id: string }[]>([]);
@@ -12,34 +13,32 @@ const About = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isEditing, setIsEditing] = useState(false); 
 
+  useEffect(() => {
+    const getText = async () => {
+      try {
+        const data = await fetchText();
+        setText(data.content);
+      } catch (error) {
+        console.error('Chyba při načítání textu:', error);
+      }
+    };
+
+    getText();
+  }, []);
+
   // Načtení obrázků z databáze
   useEffect(() => {
-    const fetchImages = async () => {
+    const getImages = async () => {
       try {
-        const response = await axios.get('/api/images');
-        setImages(response.data);
+        const data = await fetchImages();
+        setImages(data);
       } catch (error) {
         console.error('Chyba při načítání obrázků:', error);
       }
     };
 
-    fetchImages();
+    getImages();
   }, []);
-    // Načtení textu z databáze
-    useEffect(() => {
-      const fetchText = async () => {
-        try {
-          const response = await axios.get('/api/about');
-          if (response.data) {
-            setText(response.data.content);
-          }
-        } catch (error) {
-          console.error('Chyba při načítání textu:', error);
-        }
-      };
-  
-      fetchText();
-    }, []);
 
   // Změna souboru v inputu
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -56,19 +55,11 @@ const About = () => {
 
     if (!newImage) return;
 
-    const formData = new FormData();
-    formData.append('image', newImage); // Klíč musí být `image`, protože to očekává backend
-
     try {
       const token = sessionStorage.getItem('token');
-      const response = await axios.post('/api/images/upload', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-          'Authorization': token ? token : '',
-        },
-      });
-      const newImageUrl = `data:${response.data.contentType};base64,${response.data.image}`;
-      setImages((prev) => [...prev, { url: newImageUrl, contentType: response.data.contentType, id: response.data.id }]);
+      const data = await uploadImage(newImage, token);
+      const newImageUrl = `data:${data.contentType};base64,${data.image}`;
+      setImages((prev) => [...prev, { url: newImageUrl, contentType: data.contentType, id: data.id }]);
     } catch (error) {
       console.error('Chyba při nahrávání obrázku:', error);
     }
@@ -78,14 +69,7 @@ const About = () => {
   const handleDelete = async (id: string) => {
     try {
       const token = sessionStorage.getItem('token');
-      // Volání na server pro smazání obrázku
-      await axios.delete(`/api/images/${id}`, {
-        headers: {
-          'Authorization': token ? token : '',
-        },
-      });
-
-      // Aktualizace stavu po smazání obrázku
+      await deleteImage(id, token);
       setImages((prev) => prev.filter((image) => image.id !== id));
     } catch (error) {
       console.error('Chyba při mazání obrázku:', error);
@@ -96,18 +80,10 @@ const About = () => {
     setText(newText);
   };
 
-  const saveText = async (text: string) => {
+  const handleSaveText = async (text: string) => {
     try {
       const token = sessionStorage.getItem('token');
-      await axios.post(
-        '/api/about/text',
-        { content: text },
-        {
-          headers: {
-            Authorization: token ? `Bearer ${token}` : '',
-          },
-        }
-      );
+      await saveText(text, token);
       console.log('Text byl úspěšně uložen!');
     } catch (error) {
       console.error('Chyba při ukládání textu:', error);
@@ -169,7 +145,7 @@ const About = () => {
           </div>
         </div>
       )}
-      <TextArea text={text} onTextChange={handleTextChange} onSave={saveText} />
+      <TextArea text={text} onTextChange={handleTextChange} onSave={handleSaveText} />
     </div>
   );
 };

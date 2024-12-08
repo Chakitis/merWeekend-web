@@ -48,7 +48,6 @@ router.get('/', async (req, res) => {
 router.delete('/:id', authMiddleware, async (req, res) => {
   const { id } = req.params;
 
-  // Zkontrolujte, zda je ID platný ObjectId
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(400).send({ message: 'Neplatný formát ID' });
   }

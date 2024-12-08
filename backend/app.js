@@ -5,7 +5,7 @@ const dotenv = require('dotenv');
 const path = require('path');
 const bodyParser = require('body-parser');
 const authRoutes = require('./routes/authRoutes');
-const uploadRoutes = require('./routes/uploadRoutes');
+const carouselImageRoutes = require('./routes/CarouselImageRoutes');
 const carouselTextRoutes = require('./routes/carouselTextRoutes');
 const ProgramImagesRoutes = require('./routes/ProgramImagesRoutes');
 const eventLocationTextRoutes = require('./routes/EventLocationTextRoutes');
@@ -29,9 +29,9 @@ app.use(bodyParser.urlencoded({ limit: '50mb', extended: true })); // Middleware
 
 // Použití rout
 app.use('/api/auth', authRoutes);
-app.use('/api/images', uploadRoutes);
+app.use('/api/about/images', carouselImageRoutes);
 app.use('/api/Program/images', ProgramImagesRoutes);
-app.use('/api/about', carouselTextRoutes);
+app.use('/api/about/text', carouselTextRoutes);
 app.use('/api/eventLocation', eventLocationTextRoutes);
 app.use('/api/eventRules', eventRulesTextRoutes);
 app.use('/api/eventRules/images', EventRulesImagesRoutes);

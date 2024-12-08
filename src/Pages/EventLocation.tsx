@@ -5,6 +5,7 @@ import '../Styles/EventLocation.css';
 import TextArea from '../Components/TextArea';
 import axios from 'axios';
 import { useState, useEffect } from 'react';
+import { fetchText, saveText } from '../api/eventLocationApi';
 
 const markerIconUrl = `${process.env.PUBLIC_URL}/images/markerO.png`;
 
@@ -23,36 +24,26 @@ const EventLocation = () => {
 
   // Načtení textu z databáze
   useEffect(() => {
-    const fetchText = async () => {
+    const getText = async () => {
       try {
-        const response = await axios.get('/api/eventLocation/text');
-        if (response.data) {
-          setText(response.data.content);
-        }
+        const data = await fetchText();
+        setText(data.content);
       } catch (error) {
         console.error('Chyba při načítání textu:', error);
       }
     };
 
-    fetchText();
+    getText();
   }, []);
 
   const handleTextChange = (newText: string) => {
     setText(newText);
   };
 
-  const saveText = async (text: string) => {
+  const handleSaveText = async (text: string) => {
     try {
       const token = sessionStorage.getItem('token');
-      await axios.post(
-        '/api/eventLocation/text',
-        { content: text },
-        {
-          headers: {
-            Authorization: token ? `Bearer ${token}` : '',
-          },
-        }
-      );
+      await saveText(text, token);
       console.log('Text byl úspěšně uložen!');
     } catch (error) {
       console.error('Chyba při ukládání textu:', error);
@@ -61,7 +52,7 @@ const EventLocation = () => {
 
   return (
     <div className="event-location">
-      <TextArea text={text} onTextChange={handleTextChange} onSave={saveText} />
+      <TextArea text={text} onTextChange={handleTextChange} onSave={handleSaveText} />
       
       <div className="map-container">
         <MapContainer center={position} zoom={zoom} className="leaflet-container">

@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
 import { isAuthenticated } from '../utils/auth';
 import '../Styles/About.css';
 import { Carousel } from 'react-bootstrap';

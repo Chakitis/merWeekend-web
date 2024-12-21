@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { isAuthenticated } from '../utils/auth';
 import '../Styles/Program.css';
 import { deleteImage, fetchImages, uploadImage } from '../api/programApi';
 
@@ -60,7 +58,7 @@ const Program = () => {
 
   return (
     <div className="program-container">
-      {isAuthenticated() && (
+      {/* {isAuthenticated() && ( */}
         <div className="upload-section">
           <form onSubmit={handleUpload}>
             <input type="file" onChange={handleFileChange} />
@@ -69,19 +67,19 @@ const Program = () => {
             </button>
           </form>
         </div>
-      )}
+      {/* )} */}
       <div className="image-list">
         {images.map((image, index) => (
           <div key={index} className="image-item">
             <img src={image.url} alt={`Obrázek ${index + 1}`} className="image-thumbnail" />
-            {isAuthenticated() && (
+            {/* {isAuthenticated() && ( */}
               <button
                 onClick={() => handleDelete(image.id)}
                 className="btn btn-danger btn-sm ml-2"
               >
                 Smazat
               </button>
-            )}
+            {/* )} */}
           </div>
         ))}
       </div>

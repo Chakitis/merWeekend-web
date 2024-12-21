@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { fetchText, fetchImages, uploadImage, deleteImage, replaceImage, saveText } from '../api/eventRulesApi';
-import { isAuthenticated } from '../utils/auth';
 import TextArea from '../Components/TextArea';
 import '../Styles/EventRules.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -113,7 +112,7 @@ const EventRules = () => {
           {images.slice(0, 1).map((image) => (
             <div key={image.id} className="image-item small-image-header">
               <img src={image.url} alt={`Obrázek ${image.id}`} className="img-fluid rounded shadow-sm" />
-              {isAuthenticated() && (
+              {/* {isAuthenticated() && ( */}
                 <div className="image-controls">
                   <button className="btn btn-danger mt-2" onClick={() => handleDelete(image.id)}>Smazat</button>
                   <label className="btn btn-secondary mt-2">
@@ -126,7 +125,7 @@ const EventRules = () => {
                     />
                   </label>
                 </div>
-              )}
+              {/* )} */}
             </div>
           ))}
         </div>
@@ -137,7 +136,7 @@ const EventRules = () => {
           {images.slice(1, 2).map((image) => (
             <div key={image.id} className="image-item small-image-header">
               <img src={image.url} alt={`Obrázek ${image.id}`} className="img-fluid rounded shadow-sm" />
-              {isAuthenticated() && (
+              {/* {isAuthenticated() && ( */}
                 <div className="image-controls">
                   <button className="btn btn-danger mt-2" onClick={() => handleDelete(image.id)}>Smazat</button>
                   <label className="btn btn-secondary mt-2">
@@ -150,7 +149,7 @@ const EventRules = () => {
                     />
                   </label>
                 </div>
-              )}
+              {/* )} */}
             </div>
           ))}
         </div>
@@ -160,7 +159,7 @@ const EventRules = () => {
           {images.slice(2, 3).map((image) => (
             <div key={image.id} className="image-item small-image">
               <img src={image.url} alt={`Obrázek ${image.id}`} className="img-fluid rounded shadow-sm" />
-              {isAuthenticated() && (
+              {/* {isAuthenticated() && ( */}
                 <div className="image-controls">
                   <button className="btn btn-danger mt-2" onClick={() => handleDelete(image.id)}>Smazat</button>
                   <label className="btn btn-secondary mt-2">
@@ -173,7 +172,7 @@ const EventRules = () => {
                     />
                   </label>
                 </div>
-              )}
+              {/* )} */}
             </div>
           ))}
         </div>
@@ -184,7 +183,7 @@ const EventRules = () => {
           {images.slice(3, 4).map((image) => (
             <div key={image.id} className="image-item small-image">
               <img src={image.url} alt={`Obrázek ${image.id}`} className="img-fluid rounded shadow-sm" />
-              {isAuthenticated() && (
+              {/* {isAuthenticated() && ( */}
                 <div className="image-controls">
                   <button className="btn btn-danger mt-2" onClick={() => handleDelete(image.id)}>Smazat</button>
                   <label className="btn btn-secondary mt-2">
@@ -197,7 +196,7 @@ const EventRules = () => {
                     />
                   </label>
                 </div>
-              )}
+              {/* )} */}
             </div>
           ))}
         </div>
@@ -207,7 +206,7 @@ const EventRules = () => {
           <div key={image.id} className="col-md-4">
             <div className="image-item">
               <img src={image.url} alt={`Obrázek ${image.id}`} className="img-fluid rounded shadow-sm" />
-              {isAuthenticated() && (
+              {/* {isAuthenticated() && ( */}
                 <div className="image-controls">
                   <button className="btn btn-danger mt-2" onClick={() => handleDelete(image.id)}>Smazat</button>
                   <label className="btn btn-secondary mt-2">
@@ -220,19 +219,19 @@ const EventRules = () => {
                     />
                   </label>
                 </div>
-              )}
+              {/* )} */}
             </div>
           </div>
         ))}
       </div>
-      {isAuthenticated() && (
+      {/* {isAuthenticated() && ( */}
         <div className="upload-section">
           <form onSubmit={handleUpload}>
             <input type="file" accept="image/*" onChange={handleFileChange} />
             <button className="btn btn-primary mt-2" type="submit">Nahrát obrázek</button>
           </form>
         </div>
-      )}
+      {/* )} */}
     </div>
   );
 };

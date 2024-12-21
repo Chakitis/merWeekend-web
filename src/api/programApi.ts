@@ -1,6 +1,7 @@
 import axios from 'axios';
 
-const API_URL = '/api/program';
+const BASE_URL = 'http://localhost:5124';
+const API_URL = `${BASE_URL}/api/program`;
 
 
 export const fetchImages = async () => {

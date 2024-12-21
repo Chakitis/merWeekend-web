@@ -1,8 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import '../Styles/Login.css';
-import config from '../config';
+// import { loginAdmin } from '../utils/auth';
 
 interface LoginProps {
   setAuth: (auth: boolean) => void;
@@ -18,12 +17,7 @@ const Login = ({ setAuth }: LoginProps) => {
     e.preventDefault();
 
     try {
-      const response = await axios.post(`${config.apiBaseUrl}/api/auth/login`, { username, password });
-      const { token } = response.data;
-
-      // Uložení tokenu do sessionStorage
-      sessionStorage.setItem('token', token);
-
+      // const token = await loginAdmin(username, password);
       setAuth(true);
       navigate('/');
     } catch (err) {

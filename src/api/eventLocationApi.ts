@@ -1,6 +1,7 @@
 import axios from 'axios';
 
-const API_TEXT_URL = '/api/eventLocation';
+const BASE_URL = 'http://localhost:5124';
+const API_TEXT_URL =  `${BASE_URL}/api/eventLocation`;
 
 export const fetchText = async () => {
   try {
